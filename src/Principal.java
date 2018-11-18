@@ -15,24 +15,30 @@ public class Principal extends JFrame implements Runnable{
 	JLabel lBcgrnd = new JLabel(bcgrnd.getImg());
 	
 	ArrayList<DesenhoMovel> stones = new ArrayList<DesenhoMovel>();
+	ArrayList<JLabel> lStones = new ArrayList<JLabel>();
 	
 	
 	boolean stone1 = stones.add(new DesenhoMovel("stone1.png", ThreadLocalRandom.current().nextInt(0, 418), 10));	
-	JLabel lStone1 = new JLabel(stones.get(0).getImg());
-//	DesenhoMovel stone2 = new DesenhoMovel("stone2.png", 256, 256);	
-//	JLabel lStone2 = new JLabel(stone2.getImg());
-//	DesenhoMovel stone3 = new DesenhoMovel("stone3.png", 256, 256);	
-//	JLabel lStone3 = new JLabel(stone3.getImg());
+	boolean lStone1 = lStones.add(new JLabel(stones.get(0).getImg()));
+	
+	boolean stone2 = stones.add(new DesenhoMovel("stone2.png", ThreadLocalRandom.current().nextInt(0, 418), 10));	
+	boolean lStone2 = lStones.add(new JLabel(stones.get(1).getImg()));
+	
+	boolean stone3 = stones.add(new DesenhoMovel("stone3.png", ThreadLocalRandom.current().nextInt(0, 418), 10));	
+	boolean lStone3 = lStones.add(new JLabel(stones.get(2).getImg()));
 	
 	DesenhoMovel ship1 = new DesenhoMovel("ship1.png", 188, 568);
 	JLabel lShip1 = new JLabel(ship1.getImg());
 	
+	int lStonesI = ThreadLocalRandom.current().nextInt(0, 3);
+	int stonesI = ThreadLocalRandom.current().nextInt(0, 3);
+	
 	public void run() {
-		while (true) {
+		while (ship1.getX() < 580) {
 			try {
 				sleep(190);
-				stones.get(0).moveDown();
-				lStone1.setBounds(stones.get(0).getX(), stones.get(0).getY(), lStone1.getWidth(), lStone1.getHeight());
+				stones.get(stonesI).moveDown();
+				lStones.get(lStonesI).setBounds(stones.get(stonesI).getX(), stones.get(stonesI).getY(), lStones.get(lStonesI).getWidth(), lStones.get(lStonesI).getHeight());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -112,18 +118,23 @@ public class Principal extends JFrame implements Runnable{
         this.setVisible(true);
         setResizable(false);
         
-        this.add(lStone1);
-//        this.add(lStone2);
-//        this.add(lStone3);
+        this.add(lStones.get(0));
+        this.add(lStones.get(1));
+        this.add(lStones.get(2));
         this.add(lShip1);
         this.add(lBcgrnd);
 	}
 	public void component() {
 		lBcgrnd.setBounds(0, 0, 498, 720);
 		lShip1.setBounds(ship1.getX(), ship1.getY(), 128, 128);
-		lStone1.setBounds(stones.get(0).getX(), stones.get(0).getY(), 80, 60);
-//		lStone2.setBounds(stone2.getX(), stone2.getY(), 40, 60);
-//		lStone3.setBounds(stone3.getX(), stone3.getY(), 10, 60);
+		
+		if(stonesI  == 0) {
+			lStones.get(lStonesI).setBounds(stones.get(stonesI).getX(), stones.get(stonesI).getY(), 80, 60);
+		} else if(stonesI == 1) {
+			lStones.get(lStonesI).setBounds(stones.get(stonesI).getX(), stones.get(stonesI).getY(), 100, 700);
+		} else if(stonesI == 2) {
+			lStones.get(lStonesI).setBounds(stones.get(stonesI).getX(), stones.get(stonesI).getY(), 120, 90);
+		}
 	}
 	
 	
