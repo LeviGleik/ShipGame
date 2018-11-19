@@ -7,7 +7,6 @@ public class Desenho {
 	private int y;
 	
    	Desenho(String path ,int x , int y) {
-   		
       this.img = new ImageIcon(getClass().getResource(path));
       this.x = x;
       this.y = y;
