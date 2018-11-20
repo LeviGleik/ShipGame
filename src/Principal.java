@@ -8,23 +8,24 @@ import javax.swing.JLabel;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Principal extends JFrame{
+public class Principal extends JFrame implements Runnable{
 	
-	Desenho bcgrnd = new Desenho("background.gif", 498, 720);
+	Desenho bcgrnd = new Desenho("images/background.gif", 498, 720);
 	
 	JLabel lBcgrnd = new JLabel(bcgrnd.getImg());
 	
-	ArrayList<DesenhoMovel> stones = new ArrayList<DesenhoMovel>();
-	ArrayList<JLabel> lStones = new ArrayList<JLabel>();
-	int stonesI = ThreadLocalRandom.current().nextInt(0, 3);
-	int localStone1 = ThreadLocalRandom.current().nextInt(0, 418);
-	int localStone2 = ThreadLocalRandom.current().nextInt(0, 412);
-	int localStone3 = ThreadLocalRandom.current().nextInt(0, 408);
-	int qtdeStones = 10;
-	String[] stonesS = {"stone1.png", "stone2.png", "stone3.png"};
+	DesenhoMovel stone1 = new DesenhoMovel("images/stone1.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
+	DesenhoMovel stone2 = new DesenhoMovel("images/stone2.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
+	DesenhoMovel stone3 = new DesenhoMovel("images/stone3.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
+	
+	JLabel lStone1 = new JLabel(stone1.getImg());
+	JLabel lStone2 = new JLabel(stone2.getImg());
+	JLabel lStone3 = new JLabel(stone3.getImg());
+	
+	int qtdeStones = 5;
 	
 	
-	DesenhoMovel ship1 = new DesenhoMovel("ship1.png", 188, 568);
+	DesenhoMovel ship1 = new DesenhoMovel("images/ship1.png", 188, 568);
 	JLabel lShip1 = new JLabel(ship1.getImg());
 	
 //	 public boolean collision(Component a, Component b) {
@@ -77,13 +78,18 @@ public class Principal extends JFrame{
 	    //new Veficacao().start();
     }
 	
+	private DesenhoMovel DesenhoMovel(String string, int i, int j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public static void main(String[] args) {
-		Runnable down = new DownStones();
-//		Runnable add = new AddThread();
-		Thread rDown = new Thread(down);
-//		Thread rAdd = new Thread(add);
-		rDown.start();
-//		rAdd.start();	
+		Runnable a = new Principal();
+		new Thread(a).start();
+	}
+	public void run() {
+//		this.addThread();
+		this.downStones();
 	}
 	public void addMoviment() {
 		addKeyListener(new KeyListener() {
@@ -127,26 +133,53 @@ public class Principal extends JFrame{
 			}
 		});
 	}
+//	public void addThread() {
+//		new Thread() {
+//			@Override
+//			public void run() {
+//				while(stones.size()<qtdeStones) {
+//		        	stones.add(new DesenhoMovel(stonesS[ThreadLocalRandom.current().nextInt(0, 3)], ThreadLocalRandom.current().nextInt(0, 418), 0));
+//		        }
+//			}
+//		}.start();
+//	}
+	public void downStones(){
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					if (stone1.moveDown(850)) {
+						sleep(ThreadLocalRandom.current().nextInt(0, 20));
+						for(int i = 0; i < qtdeStones; i++) {
+							stone1.moveDown(730, ThreadLocalRandom.current().nextInt(10, 80));
+							lStone1.setBounds(stone1.getX(), stone1.getY(), lStone1.getWidth(), lStone1.getHeight());
+						}
+						System.out.println(lStone1 +" "+stone1.getY());
+					} else {
+						for(int i = 0; i < qtdeStones; i++) {
+							stone1.setY(0);
+				    		add(lStone1);
+			    			lStone1.setBounds(stone1.getX(), stone1.getY(), 80, 60);
+			    			System.out.println(stone1.getX());
+				    	}
+					}
+				} catch (LimitBackgroundException e) {
+					
+				} catch (InterruptedException e) {
+					
+				}
+					
+			}
+		}.start();
+	}
+	
 	public void window() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(498, 720);
         this.setVisible(true);
         setResizable(false);
-        
-        stones.add(new DesenhoMovel("stone1.png", localStone1, 0));	
-        stones.add(new DesenhoMovel("stone2.png", localStone2, 0));
-    	stones.add(new DesenhoMovel("stone3.png", localStone3, 0));
     	
-    	
-    	
-    	
-        for(int i = 0; i < qtdeStones; i++) {
-        	stones.add(new DesenhoMovel(stonesS[ThreadLocalRandom.current().nextInt(0, 3)], localStone3, 0));
-    		lStones.add(new JLabel(stones.get(stonesI).getImg()));
-    		this.add(lStones.get(i));
-    	}
-        
-    	
+        this.add(lStone1);
         
         this.add(lShip1);
         this.add(lBcgrnd);
@@ -154,27 +187,8 @@ public class Principal extends JFrame{
 	public void component() {
 		lBcgrnd.setBounds(0, 0, 498, 720);
 		lShip1.setBounds(ship1.getX(), ship1.getY(), 128, 128);
-		int j = 0;
-		for(int i = 0; i < qtdeStones; i++) {
-			
-			lStones.get(i).setBounds(stones.get(j).getX(), stones.get(j).getY(), 80, 60);
-			localStone1 = ThreadLocalRandom.current().nextInt(0, 418);
-			localStone2 = ThreadLocalRandom.current().nextInt(0, 412);
-			localStone3 = ThreadLocalRandom.current().nextInt(0, 408);
-			if(j<2) {
-				j++;
-			}
-		}
+		lStone1.setBounds(stone1.getX(), stone1.getY(), 80, 60);
 		
-//		for(int i = 0; i < qtdeStones; i++) {
-//			if(stonesI == 0) {
-//				paintStone(stonesI, 80, 60);
-//			} else if(stonesI == 1) {
-//				paintStone(stonesI, 100, 70);
-//			} else if(stonesI == 2) {
-//				paintStone(stonesI, 120, 90);
-//			}
-//		}
 	}
 	
 	
