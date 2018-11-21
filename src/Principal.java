@@ -25,8 +25,6 @@ public class Principal extends JFrame implements Runnable{
 	DesenhoMovel missile = new DesenhoMovel("images/missile.png", ship1.getX()+23, ship1.getY()-56);
 	JLabel lMissile = new JLabel(missile.getImg());
 	
-	int death = 0;
-	int point = 0;
 	public boolean collision(Component a, Component b) {
         int aX = a.getX();
         int aY = a.getY();
@@ -91,7 +89,7 @@ public class Principal extends JFrame implements Runnable{
 		this.collisionThread();
 		this.upMissile();
 		this.downStones();
-		System.out.println(ship1.getPoint());
+//		System.out.println(ship1.getDeaths());
 	}
 	public void addMoviment() {
 		addKeyListener(new KeyListener() {
@@ -137,14 +135,16 @@ public class Principal extends JFrame implements Runnable{
 			@Override
 			public void run() {
 				while (true) {
-					if(collision(lStone1, lShip1)) {
-						ship1.dead(death);						
-					} else if(collision(lMissile, lStone1)) {
-						ship1.addPoint(lShip1);
-						stone1.setY(0);
-						stone1.setX(ThreadLocalRandom.current().nextInt(0, 418));
-					} else {
-						System.out.println();
+					try {
+						if(collision(lMissile, lStone1)) {
+							ship1.addPoint(lShip1);
+							stone1.setY(0);
+							stone1.setX(ThreadLocalRandom.current().nextInt(0, 418));
+						} else {
+							sleep(1);
+						}
+					} catch  (Exception erro){
+						
 					}
 				}
 			}

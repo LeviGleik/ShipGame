@@ -1,6 +1,7 @@
 import static java.lang.Thread.sleep;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class DesenhoMovel extends Desenho{
     }
 	
 	ArrayList<JLabel> points = new ArrayList<JLabel>();
-  
+	int point = 0;
 
     public boolean moveUp(int a) throws LimitBackgroundException{
     	boolean b = false;
@@ -85,23 +86,40 @@ public class DesenhoMovel extends Desenho{
     	}
     }
     
-    public void dead(int death) {
-		death++;
-		File deaths = new File("C:\\Users\\levig\\Desktop\\highscore.txt");
+//    public void dead() {
+//		this.death++;
+//		File deaths = new File("C:\\Users\\levig\\Desktop\\highscore.txt");
+//		try {
+//			FileInputStream fis = new FileInputStream(deaths);
+//			FileOutputStream fos = new FileOutputStream(deaths);
+//			fos.write(death);
+//			System.out.println(fis.read());
+//			fis.close();
+//			fos.close();
+//		} catch (FileNotFoundException e) {
+//			System.out.println("Arquivo não encontrado.");
+//		} catch (IOException e) {
+//			System.out.println("Erro de IO.");
+//		}
+//	}
+	public void addPoint(JLabel j) {
+//		if (!(this.points.contains(j))) {
+            this.points.add(j);
+//        }
+		File highscore = new File("C:\\Users\\levig\\Desktop\\highscore.txt");
 		try {
-			FileOutputStream fos = new FileOutputStream(deaths);
-			fos.write(death);
-		} catch (FileNotFoundException e) {
-			System.out.println("Arquivo não encontrado.");
+			FileInputStream fis = new FileInputStream(highscore);
+			FileOutputStream fos = new FileOutputStream(highscore);
+			fos.write(getPoint());
+			fos.close();
+			System.out.println(fis.read());
+			fis.close();
 		} catch (IOException e) {
-			System.out.println("Erro de IO.");
 		}
 	}
-	public void addPoint(JLabel j) {
-		if (!(this.points.contains(j))) {
-            this.points.add(j);
-        }
-	}
+//	public int getDeaths() {
+//		return this.point;
+//	}
 	public int getPoint() {
 		return this.points.size();
 	}
