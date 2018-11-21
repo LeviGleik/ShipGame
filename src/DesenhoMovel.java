@@ -10,10 +10,29 @@ public class DesenhoMovel extends Desenho{
     }
 
   
-    public void moveUp() throws LimitBackgroundException{
-    	if((this.getY() - 28) > 10) {
+
+    public boolean moveUp(int a) throws LimitBackgroundException{
+    	boolean b = false;
+    	if((this.getY() - 28) > a) {
     		this.setY(this.getY() - 28);
+    		b = true;
     	} else {
+    		b = false;
+    		throw new LimitBackgroundException();
+    	}
+    	return b;
+    }
+    
+    public void moveUp(int a, int time, DesenhoMovel s, DesenhoMovel m) throws LimitBackgroundException{
+    	if((this.getY() - 28) > a) {
+    		this.setY(this.getY() - 28);
+    		try {
+				sleep(time);
+			} catch (InterruptedException e) {
+			}
+    	} else {
+    		m.setX(s.getX()+23);
+    		m.setY(s.getY()-56);
     		throw new LimitBackgroundException();
     	}
     }
@@ -30,24 +49,19 @@ public class DesenhoMovel extends Desenho{
     	return b;
     }
     
-    public boolean moveDown(int a, int time, DesenhoMovel s) throws LimitBackgroundException{
-    	boolean b = false;
+    public void moveDown(int a, int time, DesenhoMovel s) throws LimitBackgroundException{
     	if((this.getY() + 28) < a) {
     		this.setY(this.getY() + 28);
     		try {
 				sleep(time);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
-    		b = true;
     	} else {
-    		b = false;
     		s.setY(0);
     		s.setX(ThreadLocalRandom.current().nextInt(0, 418));
     		throw new LimitBackgroundException();
     		
     	}
-    	return b;
     }
     
     public void moveRight() throws LimitBackgroundException{
