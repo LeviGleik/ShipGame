@@ -20,13 +20,13 @@ public class Principal extends JFrame implements Runnable{
 	
 	JLabel lStone1 = new JLabel(stone1.getImg());
 	JLabel lStone2 = new JLabel(stone2.getImg());
-	JLabel lStone3 = new JLabel(stone3.getImg());
-	
-	int qtdeStones = 5;
-	
+	JLabel lStone3 = new JLabel(stone3.getImg());	
 	
 	DesenhoMovel ship1 = new DesenhoMovel("images/ship1.png", 188, 568);
 	JLabel lShip1 = new JLabel(ship1.getImg());
+	
+	DesenhoMovel missile = new DesenhoMovel("images/missile.png", 211, ship1.getY()-56);
+	JLabel lMissile = new JLabel(missile.getImg());
 	
 //	 public boolean collision(Component a, Component b) {
 //	        int aX = a.getX();
@@ -133,40 +133,24 @@ public class Principal extends JFrame implements Runnable{
 			}
 		});
 	}
-//	public void addThread() {
-//		new Thread() {
-//			@Override
-//			public void run() {
-//				while(stones.size()<qtdeStones) {
-//		        	stones.add(new DesenhoMovel(stonesS[ThreadLocalRandom.current().nextInt(0, 3)], ThreadLocalRandom.current().nextInt(0, 418), 0));
-//		        }
-//			}
-//		}.start();
-//	}
+	
 	public void downStones(){
 		new Thread() {
 			@Override
 			public void run() {
-				try {
-					if (stone1.moveDown(850)) {
-						sleep(ThreadLocalRandom.current().nextInt(0, 20));
-						for(int i = 0; i < qtdeStones; i++) {
-							stone1.moveDown(730, ThreadLocalRandom.current().nextInt(10, 80));
-							lStone1.setBounds(stone1.getX(), stone1.getY(), lStone1.getWidth(), lStone1.getHeight());
-						}
+				while (true) {
+					
+					try {
+						sleep(150);
+						stone1.moveDown(730, ThreadLocalRandom.current().nextInt(10, 80), stone1);
+						stone1.setX(ThreadLocalRandom.current().nextInt(0, 418));
+						lStone1.setBounds(stone1.getX(), stone1.getY(), lStone1.getWidth(), lStone1.getHeight());
+					} catch (LimitBackgroundException | InterruptedException e) {	
 						System.out.println(lStone1 +" "+stone1.getY());
-					} else {
-						for(int i = 0; i < qtdeStones; i++) {
-							stone1.setY(0);
-				    		add(lStone1);
-			    			lStone1.setBounds(stone1.getX(), stone1.getY(), 80, 60);
-			    			System.out.println(stone1.getX());
-				    	}
+	//				    		add(lStone1);
+		    			lStone1.setBounds(stone1.getX(), stone1.getY(), 80, 60);
+	//	    			System.out.println(stone1.getX());
 					}
-				} catch (LimitBackgroundException e) {
-					
-				} catch (InterruptedException e) {
-					
 				}
 					
 			}
@@ -180,6 +164,7 @@ public class Principal extends JFrame implements Runnable{
         setResizable(false);
     	
         this.add(lStone1);
+        this.add(lMissile);
         
         this.add(lShip1);
         this.add(lBcgrnd);
@@ -188,6 +173,7 @@ public class Principal extends JFrame implements Runnable{
 		lBcgrnd.setBounds(0, 0, 498, 720);
 		lShip1.setBounds(ship1.getX(), ship1.getY(), 128, 128);
 		lStone1.setBounds(stone1.getX(), stone1.getY(), 80, 60);
+		lMissile.setBounds(missile.getX(), missile.getY(), 80, 60);
 		
 	}
 	

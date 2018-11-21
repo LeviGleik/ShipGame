@@ -1,6 +1,7 @@
 import static java.lang.Thread.sleep;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JLabel;
 public class DesenhoMovel extends Desenho{
@@ -29,7 +30,7 @@ public class DesenhoMovel extends Desenho{
     	return b;
     }
     
-    public boolean moveDown(int a, int time) throws LimitBackgroundException{
+    public boolean moveDown(int a, int time, DesenhoMovel s) throws LimitBackgroundException{
     	boolean b = false;
     	if((this.getY() + 28) < a) {
     		this.setY(this.getY() + 28);
@@ -41,6 +42,8 @@ public class DesenhoMovel extends Desenho{
     		b = true;
     	} else {
     		b = false;
+    		s.setY(0);
+    		s.setX(ThreadLocalRandom.current().nextInt(0, 418));
     		throw new LimitBackgroundException();
     		
     	}
