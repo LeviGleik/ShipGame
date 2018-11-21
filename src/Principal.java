@@ -1,11 +1,8 @@
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static java.lang.Thread.sleep;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal extends JFrame implements Runnable{
@@ -28,47 +25,49 @@ public class Principal extends JFrame implements Runnable{
 	DesenhoMovel missile = new DesenhoMovel("images/missile.png", ship1.getX()+23, ship1.getY()-56);
 	JLabel lMissile = new JLabel(missile.getImg());
 	
-	 public boolean collision(Component a, Component b) {
-	        int aX = a.getX();
-	        int aY = a.getY();
-	        int ladoDireitoA = aX + a.getWidth();
-	        int ladoEsquerdoA = aX;
-	        int ladoBaixoA = aY + a.getHeight();
-	        int ladoCimaA = aY;
+	int death = 0;
+	int point = 0;
+	public boolean collision(Component a, Component b) {
+        int aX = a.getX();
+        int aY = a.getY();
+        int ladoDireitoA = aX + a.getWidth();
+        int ladoEsquerdoA = aX;
+        int ladoBaixoA = aY + a.getHeight();
+        int ladoCimaA = aY;
 
-	        int bX = b.getX();
-	        int bY = b.getY();
-	        int ladoDireitoB = bX + b.getWidth();
-	        int ladoEsquerdoB = bX;
-	        int ladoBaixoB = bY + b.getHeight();
-	        int ladoCimaB = bY;
+        int bX = b.getX();
+        int bY = b.getY();
+        int ladoDireitoB = bX + b.getWidth();
+        int ladoEsquerdoB = bX;
+        int ladoBaixoB = bY + b.getHeight();
+        int ladoCimaB = bY;
 
-	        boolean collision = false;
+        boolean collision = false;
 
-	        boolean cDireita = false;
-	        boolean cCima = false;
-	        boolean cBaixo = false;
-	        boolean cEsquerda = false;
+        boolean cDireita = false;
+        boolean cCima = false;
+        boolean cBaixo = false;
+        boolean cEsquerda = false;
 
-	        if (ladoDireitoA >= ladoEsquerdoB) {
-	            cDireita = true;
-	        }
-	        if (ladoCimaA <= ladoBaixoB) {
-	            cCima = true;
-	        }
-	        if (ladoBaixoA >= ladoCimaB) {
-	            cBaixo = true;
-	        }
-	        if (ladoEsquerdoA <= ladoDireitoB) {
-	            cEsquerda = true;
-	        }
+        if (ladoDireitoA >= ladoEsquerdoB) {
+            cDireita = true;
+        }
+        if (ladoCimaA <= ladoBaixoB) {
+            cCima = true;
+        }
+        if (ladoBaixoA >= ladoCimaB) {
+            cBaixo = true;
+        }
+        if (ladoEsquerdoA <= ladoDireitoB) {
+            cEsquerda = true;
+        }
 
-	        if (cDireita && cEsquerda && cBaixo && cCima) {
-	            collision = true;
-	        }
+        if (cDireita && cEsquerda && cBaixo && cCima) {
+            collision = true;
+        }
 
-	        return collision;
-	    }
+        return collision;
+    }
 	
 	
 	public Principal() {
@@ -86,11 +85,13 @@ public class Principal extends JFrame implements Runnable{
 	public static void main(String[] args) {
 		Runnable a = new Principal();
 		new Thread(a).start();
+		
 	}
 	public void run() {
+		this.collisionThread();
 		this.upMissile();
 		this.downStones();
-		this.collisionThread();
+		System.out.println(ship1.getPoint());
 	}
 	public void addMoviment() {
 		addKeyListener(new KeyListener() {
@@ -130,21 +131,20 @@ public class Principal extends JFrame implements Runnable{
 			}
 		});
 	}
-	public void dead() {
-		System.out.println("morreu");
-	}
-	public void addPoint() {
-		System.out.println("ponto");
-	}
+	
 	public void collisionThread() {
 		new Thread() {
 			@Override
 			public void run() {
 				while (true) {
-					if(!collision(lStone1, lShip1)) {
-						dead();
+					if(collision(lStone1, lShip1)) {
+						ship1.dead(death);						
 					} else if(collision(lMissile, lStone1)) {
-						addPoint();
+						ship1.addPoint(lShip1);
+						stone1.setY(0);
+						stone1.setX(ThreadLocalRandom.current().nextInt(0, 418));
+					} else {
+						System.out.println();
 					}
 				}
 			}
