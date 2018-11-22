@@ -14,8 +14,17 @@ public class DesenhoMovel extends Desenho{
         super(path, x, y);
     }
 	
-	ArrayList<JLabel> points = new ArrayList<JLabel>();
-	int point = 0;
+	private ArrayList<JLabel> players = new ArrayList<JLabel>();
+	private int point = 0;
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	
 
     public boolean moveUp(int a) throws LimitBackgroundException{
     	boolean b = false;
@@ -102,25 +111,28 @@ public class DesenhoMovel extends Desenho{
 //			System.out.println("Erro de IO.");
 //		}
 //	}
-	public void addPoint(JLabel j) {
+	public void addPlayers(JLabel j) {
 //		if (!(this.points.contains(j))) {
-            this.points.add(j);
+            this.players.add(j);
 //        }
 		File highscore = new File("C:\\Users\\levig\\Desktop\\highscore.txt");
 		try {
 			FileInputStream fis = new FileInputStream(highscore);
 			FileOutputStream fos = new FileOutputStream(highscore);
-			fos.write(getPoint());
+			fos.write(getPoints());
 			fos.close();
 			System.out.println(fis.read());
 			fis.close();
 		} catch (IOException e) {
 		}
 	}
-//	public int getDeaths() {
-//		return this.point;
-//	}
-	public int getPoint() {
-		return this.points.size();
+	public void addPoint(JLabel p) {
+		
+	}
+	public int getPoints() {
+		return this.point;
+	}
+	public JLabel getPlayers(int index) {
+		return this.players.get(index);
 	}
 }

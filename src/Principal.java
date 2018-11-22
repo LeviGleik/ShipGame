@@ -7,23 +7,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal extends JFrame implements Runnable{
 	
-	Desenho bcgrnd = new Desenho("images/background.gif", 498, 720);
+	private Desenho bcgrnd = new Desenho("images/background.gif", 498, 720);
+	private JLabel lBcgrnd = new JLabel(bcgrnd.getImg());
 	
-	JLabel lBcgrnd = new JLabel(bcgrnd.getImg());
+	private DesenhoMovel stone1 = new DesenhoMovel("images/stone1.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
+	private DesenhoMovel stone2 = new DesenhoMovel("images/stone2.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
+	private DesenhoMovel stone3 = new DesenhoMovel("images/stone3.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
 	
-	DesenhoMovel stone1 = new DesenhoMovel("images/stone1.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
-	DesenhoMovel stone2 = new DesenhoMovel("images/stone2.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
-	DesenhoMovel stone3 = new DesenhoMovel("images/stone3.png", ThreadLocalRandom.current().nextInt(0, 418), 0);
+	private JLabel lStone1 = new JLabel(stone1.getImg());
+	private JLabel lStone2 = new JLabel(stone2.getImg());
+	private JLabel lStone3 = new JLabel(stone3.getImg());	
 	
-	JLabel lStone1 = new JLabel(stone1.getImg());
-	JLabel lStone2 = new JLabel(stone2.getImg());
-	JLabel lStone3 = new JLabel(stone3.getImg());	
+	private DesenhoMovel ship1 = new DesenhoMovel("images/ship1.png", 188, 568);
+	private JLabel lShip1 = new JLabel(ship1.getImg());
 	
-	DesenhoMovel ship1 = new DesenhoMovel("images/ship1.png", 188, 568);
-	JLabel lShip1 = new JLabel(ship1.getImg());
-	
-	DesenhoMovel missile = new DesenhoMovel("images/missile.png", ship1.getX()+23, ship1.getY()-56);
-	JLabel lMissile = new JLabel(missile.getImg());
+	private DesenhoMovel missile = new DesenhoMovel("images/missile.png", ship1.getX()+23, ship1.getY()-56);
+	private JLabel lMissile = new JLabel(missile.getImg());
 	
 	public boolean collision(Component a, Component b) {
         int aX = a.getX();
